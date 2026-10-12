@@ -1,0 +1,35 @@
+name: Build MKP Package
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write # needed to attach the MKP to a GitHub Release on tag pushes
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed so `git describe --tags` can see tags
+
+      - name: Build MKP package
+        run: bash scripts/build-mkp.sh
+
+      - name: Upload MKP as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: netapp_storagegrid-mkp
+          path: dist/*.mkp
+          if-no-files-found: error
+
+      - name: Attach MKP to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.mkp

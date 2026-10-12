@@ -47,12 +47,32 @@ package (MKP). To install it on a Checkmk 2.5 site:
 
 1. Copy the contents of `cmk_addons/plugins/netapp_storagegrid/` into
    `local/lib/python3/cmk_addons/plugins/netapp_storagegrid/` on the target
-   site (or package it as an MKP with `mkp package` and install it via
-   **Setup > Extension packages**).
+   site, or grab a ready-built `.mkp` file (see below) and install it via
+   **Setup > Extension packages**.
 2. Ensure `libexec/agent_netapp_storagegrid` is executable
    (`chmod +x`).
 3. Restart the site / reload Checkmk so the new rule sets and plugins are
    picked up.
+
+### Building the MKP package
+
+A ready-to-install `.mkp` file is built automatically by the
+[Build MKP Package](.github/workflows/build-mkp.yml) GitHub Actions
+workflow on every push/PR (as a downloadable workflow artifact) and is
+attached to the corresponding GitHub Release whenever a tag matching `v*`
+(e.g. `v1.0.0`) is pushed.
+
+To build the package locally (requires Docker), run:
+
+```bash
+scripts/build-mkp.sh [version]
+```
+
+This spins up the official Checkmk container, copies the plugin family
+into a fresh site, and uses Checkmk's own `mkp` tool to create
+`dist/netapp_storagegrid-<version>.mkp`. If `version` is omitted, it
+defaults to the current Git tag, or a development version derived from
+the commit count/hash.
 
 ## Configuration
 
