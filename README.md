@@ -1,8 +1,5 @@
 # Checkmk Special Agent: NetApp StorageGRID
 
-> [!WARNING]
-> Not usable right now
-
 A Checkmk 2.5 special agent and check plugin family for monitoring
 [NetApp StorageGRID](https://docs.netapp.com/us-en/storagegrid-119/) via its
 Grid Management REST API.
