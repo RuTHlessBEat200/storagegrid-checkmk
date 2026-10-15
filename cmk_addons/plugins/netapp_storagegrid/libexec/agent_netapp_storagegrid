@@ -94,6 +94,7 @@ def _authorize(
             "csrfToken": False,
         },
         timeout=timeout,
+        verify=session.verify,
     )
     response.raise_for_status()
     token = response.json().get("data")
@@ -111,6 +112,7 @@ def _fetch_alerts(
         f"{base_url}/api/{API_VERSION}/grid/alerts",
         headers={"Authorization": f"Bearer {token}"},
         timeout=timeout,
+        verify=session.verify,
     )
     response.raise_for_status()
     data = response.json().get("data", [])
@@ -126,6 +128,7 @@ def _fetch_tenants(
         # accounts-cache has no pagination marker, so ask for a high limit to get all tenants
         params={"limit": 500},
         timeout=timeout,
+        verify=session.verify,
     )
     response.raise_for_status()
     data = response.json().get("data", [])
